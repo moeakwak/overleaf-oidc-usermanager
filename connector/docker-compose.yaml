@@ -1,0 +1,16 @@
+---
+services:
+  overleaf-connector-api:
+    build: .
+    container_name: overleaf-connector-api
+    ports:
+      - "127.0.0.1:4571:4571"
+    env_file: .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - overleaf_default
+
+networks:
+  overleaf_default:
+    external: true

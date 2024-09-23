@@ -14,12 +14,11 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    MONGODB_URL: z.string().default("mongodb://mongo:27017/sharelatex"),
+    OVERLEAF_CONNECTOR_URL: z.string().default("http://host.docker.internal:4571"),
+    OVERLEAF_CONNECTOR_API_KEY: z.string(),
 
     IS_BUILDING: booleanEnv.default(false),
 
-    DATABASE_TYPE: z.enum(["postgres", "neon"]),
-    POSTGRES_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
     ADMIN_EMAIL: z.string().email().optional().default("admin@example.com"),
@@ -61,11 +60,11 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    MONGODB_URL: process.env.MONGODB_URL,
+    OVERLEAF_CONNECTOR_URL: process.env.OVERLEAF_CONNECTOR_URL,
+    OVERLEAF_CONNECTOR_API_KEY: process.env.OVERLEAF_CONNECTOR_API_KEY,
+
     IS_BUILDING: process.env.IS_BUILDING,
 
-    DATABASE_TYPE: process.env.DATABASE_TYPE,
-    POSTGRES_URL: process.env.POSTGRES_URL,
     NODE_ENV: process.env.NODE_ENV,
 
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,

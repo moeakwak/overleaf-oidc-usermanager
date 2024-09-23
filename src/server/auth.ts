@@ -6,8 +6,6 @@ export const getSessionData = cache(async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) return null;
   const { user, session } = await lucia.validateSession(sessionId);
-  console.log("user", user);
-  console.log("session", session);
   try {
     if (!session) {
       const sessionCookie = lucia.createBlankSessionCookie();
