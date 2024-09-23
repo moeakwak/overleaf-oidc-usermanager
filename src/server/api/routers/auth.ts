@@ -5,6 +5,7 @@ import { AdminUserLoginFormSchema } from "@/server/schema";
 import { lucia } from "@/server/lucia";
 import { cookies } from "next/headers";
 import { env } from "@/env";
+import { userStorage } from "@/server/db";
 
 export const authRouter = createTRPCRouter({
   adminLoginByPassword: publicProcedure.input(AdminUserLoginFormSchema).mutation(async ({ ctx, input }) => {
@@ -15,6 +16,18 @@ export const authRouter = createTRPCRouter({
     
     if (email !== env.ADMIN_EMAIL || password !== env.ADMIN_PASSWORD) {
       throw new TRPCError({ code: "UNAUTHORIZED", message: "Wrong username or password" });
+    }
+
+    let user = await userStorage.getItem(email);
+
+    if (!user) {
+      await userStorage.setItem(email, {
+        id: email,
+        attributes: {
+          email,
+          role: "ADMIN"
+        },
+      });
     }
     
     const session = await lucia.createSession(email, {

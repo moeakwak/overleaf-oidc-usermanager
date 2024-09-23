@@ -53,3 +53,5 @@ scripts-dist
 
 *.zip
 standalone-dist
+
+tmp

@@ -56,7 +56,7 @@ export default function LoginForm() {
       await loginMutation.mutateAsync(AdminUserLoginFormSchema.parse(values));
       form.resetField("password");
       toast.success("Login successful");
-      router.push("/dashboard");
+      router.push("/admin/dashboard");
     } catch (error) {
       if (error instanceof TRPCClientError) {
         form.setError("password", { message: error.message });

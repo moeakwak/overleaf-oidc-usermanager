@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
         id: email,
         attributes: {
           email,
-          role: "USER",
+          role: env.ADMIN_EMAIL === email ? "ADMIN" : "USER",
         },
       });
     }

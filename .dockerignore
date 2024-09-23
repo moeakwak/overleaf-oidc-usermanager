@@ -16,3 +16,4 @@ scripts-dist
 postgres-data
 standalone-dist
 *.zip
+tmp
