@@ -3,6 +3,7 @@ import { Lucia, type Session as LuciaSession, TimeSpan, type User } from "lucia"
 import { UnstorageAdapter } from "./unstorage-adapter";
 import { userStorage, sessionStorage } from "./db";
 import { type UserRole } from "./schema";
+import { env } from "@/env";
 
 const adapter = new UnstorageAdapter(sessionStorage, userStorage);
 
@@ -12,7 +13,7 @@ export const lucia = new Lucia(adapter, {
     name: "overleaf-mgr-session",
     expires: false,
     attributes: {
-      secure: process.env.NODE_ENV === "production",
+      secure: env.SECURE_COOKIE,
       sameSite: "lax",
     },
   },

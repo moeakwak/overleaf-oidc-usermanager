@@ -17,7 +17,7 @@ export async function GET(_request: NextRequest) {
     const response = NextResponse.redirect(authorizationUrl);
     response.cookies.set(env.COOKIE_PREFIX + "_oidc_state", state, {
       path: "/",
-      secure: env.NODE_ENV === "production",
+      secure: env.SECURE_COOKIE,
       httpOnly: true,
       maxAge: 60 * 10,
       sameSite: "lax",
