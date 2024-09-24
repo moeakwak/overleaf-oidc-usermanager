@@ -5,7 +5,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
   const session = await getSessionData();
   if (session?.userAttr) {
     if (session.userAttr.role === "ADMIN") {
-      redirect("/admin/dashboard");
+      redirect("/admin");
     } else {
       redirect("/dashboard");
     }

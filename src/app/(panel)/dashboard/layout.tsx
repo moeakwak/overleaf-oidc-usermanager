@@ -23,7 +23,7 @@ export default async function UserDashboardLayout({ children }: DashboardLayoutP
           <div className="flex flex-row items-center space-x-4">
             <div>{user.email}</div>
             {user.role === "ADMIN" && (
-              <Link href="/admin/dashboard">
+              <Link href="/admin">
                 <Button>Admin</Button>
               </Link>
             )}

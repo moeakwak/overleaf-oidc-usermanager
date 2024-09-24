@@ -26,6 +26,7 @@ client = MongoClient(MONGO_URL, connect=True, connectTimeoutMS=3000)
 db = client[MONGO_DB_NAME]
 users_collection = db["users"]
 
+
 def verify_token(authorization: str = Header(None)):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
@@ -35,15 +36,18 @@ def verify_token(authorization: str = Header(None)):
         )
     return authorization.split(" ")[1]
 
+
 class UserModel(BaseModel):
     _id: str
     email: str
-    first_name: str
-    last_name: str
-    hashed_password: str
+    first_name: str | None = None
+    last_name: str | None = None
+    is_admin: bool = False
+    # hashedPassword: str | None = None
 
     class Config:
         from_attributes = True
+
 
 def get_current_user(token: str = Depends(verify_token)):
     if token != AUTH_TOKEN:
@@ -53,27 +57,34 @@ def get_current_user(token: str = Depends(verify_token)):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+
 class CreateUserRequest(BaseModel):
     email: str
+    admin: bool = False
+
 
 class CreateUserResponse(BaseModel):
     message: str
 
-@app.get("/api/users", dependencies=[Depends(get_current_user)], response_model=list[UserModel])
+
+@app.get("/list-users", dependencies=[Depends(get_current_user)], response_model=list[UserModel])
 async def get_users():
     users = list(users_collection.find())
     return users
 
-@app.get("/api/users/{email}", dependencies=[Depends(get_current_user)], response_model=UserModel)
+
+@app.get("/get-user", dependencies=[Depends(get_current_user)], response_model=UserModel)
 async def get_user_by_email(email: str):
     user = users_collection.find_one({"email": email})
     if user:
         return user
     raise HTTPException(status_code=404, detail="User not found")
 
-@app.post("/api/users", dependencies=[Depends(get_current_user)], response_model=CreateUserResponse)
-async def create_user(request: CreateUserRequest):
-    email = request.email
+
+@app.post("/create-user", dependencies=[Depends(get_current_user)], response_model=CreateUserResponse)
+async def create_user(req: CreateUserRequest):
+    email = req.email
+    admin = req.admin
     if not re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email):
         raise HTTPException(status_code=400, detail="Invalid email")
 
@@ -81,21 +92,22 @@ async def create_user(request: CreateUserRequest):
         client = docker.from_env()
         container = client.containers.get(CONTAINER_NAME)
         result = container.exec_run(
-            f"cd /overleaf/services/web && node modules/server-ce-scripts/scripts/create-user --email={email}",
+            f"/bin/bash -ce 'cd /overleaf/services/web && node modules/server-ce-scripts/scripts/create-user --email={email}'"
+            + (f" --admin" if admin else ""),
             stdout=True,
-            stderr=True
+            stderr=True,
         )
         if result.exit_code == 0:
             return {"message": result.output.decode().strip()}
         else:
-            raise HTTPException(status_code=500, detail=result.stderr.decode().strip())
+            raise HTTPException(status_code=500, detail=result.output.decode().strip())
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn
 
     print(f"AUTH_TOKEN: {AUTH_TOKEN}")
-    print(f"Connected to MongoDB: {client.server_info()}")
 
     uvicorn.run(app, host=HOST, port=PORT)
