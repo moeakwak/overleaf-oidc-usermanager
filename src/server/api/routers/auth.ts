@@ -8,39 +8,41 @@ import { env } from "@/env";
 import { userStorage } from "@/server/db";
 
 export const authRouter = createTRPCRouter({
-  adminLoginByPassword: publicProcedure.input(AdminUserLoginFormSchema).mutation(async ({ ctx, input }) => {
-    if (env.ENABLE_ADMIN_PASSWORD_LOGIN === false) {
-      throw new TRPCError({ code: "UNAUTHORIZED", message: "Password login is disabled" });
-    }
-    const { email, password } = input;
+  // adminLoginByPassword: publicProcedure.input(AdminUserLoginFormSchema).mutation(async ({ ctx, input }) => {
+  //   if (env.ENABLE_ADMIN_PASSWORD_LOGIN === false) {
+  //     throw new TRPCError({ code: "UNAUTHORIZED", message: "Password login is disabled" });
+  //   }
+  //   const { email, password } = input;
     
-    if (email !== env.ADMIN_EMAIL || password !== env.ADMIN_PASSWORD) {
-      throw new TRPCError({ code: "UNAUTHORIZED", message: "Wrong username or password" });
-    }
+  //   if (email !== env.ADMIN_EMAIL || password !== env.ADMIN_PASSWORD) {
+  //     throw new TRPCError({ code: "UNAUTHORIZED", message: "Wrong username or password" });
+  //   }
 
-    let user = await userStorage.getItem(email);
+  //   const user = await userStorage.getItem(email);
 
-    if (!user) {
-      await userStorage.setItem(email, {
-        id: email,
-        attributes: {
-          email,
-          role: "ADMIN"
-        },
-      });
-    }
+  //   if (!user) {
+  //     await userStorage.setItem(email, {
+  //       id: email,
+  //       attributes: {
+  //         email,
+  //         role: "ADMIN"
+  //       },
+  //     });
+  //   }
     
-    const session = await lucia.createSession(email, {
-      email,
-      role: "ADMIN"
-    });
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(sessionCookie);
-  }),
+  //   const session = await lucia.createSession(email, {
+  //     email,
+  //     role: "ADMIN"
+  //   });
+  //   const sessionCookie = lucia.createSessionCookie(session.id);
+  //   cookies().set(sessionCookie);
+  // }),
 
-  logout: protectedProcedure.mutation(async ({ ctx }) => {
+  logout: publicProcedure.mutation(async ({ ctx }) => {
     const session = ctx.session;
-    await lucia.invalidateSession(session.id);
-    cookies().delete(lucia.sessionCookieName);
+    if (session) {
+      await lucia.invalidateSession(session.id);
+      cookies().delete(lucia.sessionCookieName);
+    }
   }),
 });

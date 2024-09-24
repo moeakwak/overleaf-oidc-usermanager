@@ -11,7 +11,8 @@ export function useLogout() {
     try {
       await logoutMutation.mutateAsync();
       toast.success("Logged out successfully");
-      router.push("/auth/login");
+      router.replace("/");
+      router.refresh();
     } catch (error) {
       if (error instanceof TRPCClientError) {
         toast.error(error.message);

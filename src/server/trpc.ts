@@ -3,7 +3,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type SessionData } from "@/server/lucia";
-import { UserRole, UserRoles } from "./schema";
+import { UserRoles } from "./schema";
 import { getSessionData } from "@/server/auth";
 import { env } from "@/env";
 

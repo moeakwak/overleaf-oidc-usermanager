@@ -14,10 +14,10 @@ MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "sharelatex")
 CONTAINER_NAME = os.getenv("CONTAINER_NAME", "sharelatex")
 HOST = os.getenv("HOST", "0.0.0.0")
 PORT = int(os.getenv("PORT", 4571))
-AUTH_TOKEN = os.getenv("AUTH_TOKEN")
+API_KEY = os.getenv("OVERLEAF_CONNECTOR_API_KEY")
 
-if not AUTH_TOKEN:
-    raise ValueError("AUTH_TOKEN environment variable cannot be empty")
+if not API_KEY:
+    raise ValueError("OVERLEAF_CONNECTOR_API_KEY environment variable cannot be empty")
 
 app = FastAPI()
 
@@ -50,7 +50,7 @@ class UserModel(BaseModel):
 
 
 def get_current_user(token: str = Depends(verify_token)):
-    if token != AUTH_TOKEN:
+    if token != API_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or missing token",
@@ -108,6 +108,6 @@ async def create_user(req: CreateUserRequest):
 if __name__ == "__main__":
     import uvicorn
 
-    print(f"AUTH_TOKEN: {AUTH_TOKEN}")
+    print(f"AUTH_TOKEN: {API_KEY}")
 
     uvicorn.run(app, host=HOST, port=PORT)

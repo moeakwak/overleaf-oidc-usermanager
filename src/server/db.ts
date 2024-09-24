@@ -1,5 +1,5 @@
 // db.ts
-import { UserRole } from "./schema";
+import { type UserRole } from "./schema";
 import { createStorage, prefixStorage } from "unstorage";
 
 import fsLiteDriver from "unstorage/drivers/fs-lite";

@@ -1,0 +1,27 @@
+---
+services:
+  connector-api:
+    build: ./connector
+    container_name: overleaf-connector-api
+    ports:
+      - "127.0.0.1:4571:4571"
+    env_file: .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - overleaf_default
+  
+  oidc-usermanager:
+    build: .
+    container_name: overleaf-oidc-usermanager
+    ports:
+      - "3000:3000"
+    env_file: .env
+    networks:
+      - overleaf_default
+    depends_on:
+      - connector-api
+
+networks:
+  overleaf_default:
+    external: true

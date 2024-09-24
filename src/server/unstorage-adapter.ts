@@ -1,7 +1,7 @@
 // https://github.com/shinosaki/lucia-adapter-unstorage
 
 import type { Adapter, DatabaseSession, DatabaseUser } from "lucia";
-import { prefixStorage, Storage } from "unstorage";
+import { type Storage } from "unstorage";
 
 export class UnstorageAdapter implements Adapter {
   private sessionStorage;
@@ -29,7 +29,7 @@ export class UnstorageAdapter implements Adapter {
         }),
       ),
     );
-    return sessions.filter((session) => session !== null) as DatabaseSession[];
+    return sessions.filter((session) => session !== null);
   }
 
   public async getSessionAndUser(

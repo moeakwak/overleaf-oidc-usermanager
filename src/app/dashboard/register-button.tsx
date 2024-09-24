@@ -26,7 +26,7 @@ export function RegisterButton(props: { email: string; text: string }) {
               const emailMatch = successMessage[0].match(/\s*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
               const linkMatch = successMessage[0].match(/http.*$/m);
               if (emailMatch) {
-                setEmail(emailMatch[1] || "");
+                setEmail(emailMatch[1] ?? "");
                 console.log(emailMatch[1]);
               }
               if (linkMatch) {

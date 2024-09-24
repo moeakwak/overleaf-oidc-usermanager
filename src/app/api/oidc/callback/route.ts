@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
     if (!email) {
       return NextResponse.json({ error: "Email not found in OIDC userinfo" }, { status: 400 });
     }
-    let user = await userStorage.getItem(email);
+    const user = await userStorage.getItem(email);
 
     if (!user) {
       await userStorage.setItem(email, {

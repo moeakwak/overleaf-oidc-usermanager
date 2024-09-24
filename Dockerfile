@@ -21,7 +21,6 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN yarn global add pnpm && SKIP_ENV_VALIDATION=1 IS_BUILDING=1 pnpm run build;
-RUN node scripts/build.mjs;
 
 ##### RUNNER
 
@@ -31,14 +30,11 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-COPY --from=builder /app/scripts-dist ./scripts-dist
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/drizzle ./drizzle
-
 
 EXPOSE 3000
 ENV PORT 3000

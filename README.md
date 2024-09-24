@@ -1,30 +1,15 @@
-# Easy Panel
+# Overleaf OIDC User Manager
 
-Easy Panel 是一款用 Next.js 开发的服务管理面板，目前支持 Cockroachai 的用户管理。
+The Overleaf community edition does not provide LDAP and SAML functionality. Existing projects, such as [smhaller/ldap-overleaf-sl](https://github.com/smhaller/ldap-overleaf-sl), require modifying the Overleaf source code and need to be re-patched when updates occur.
 
-> [!NOTE]
->
-> Easy Panel 尚在早期开发测试阶段，存在不稳定性，请斟酌使用。
+If you can accept not supporting OIDC login but allow users from an identity provider to self-register accounts, then you can use this project. This project allows OIDC users to self-register accounts and only use OIDC Email for registration.
 
-项目适合：
-- 私人小规模共享
-- 中小规模的团队、组织、实验室内部使用
+## Requirements
 
-项目不适合：
-- 商业行为
+The project assumes deployment using overleaf-toolkit, following default settings.
 
-## 特点
+## Deployment
 
-- 支持多实例的配置和管理
-- 支持 OIDC 一键登录
-- 实例级别的用户权限管理
-- 详细的日志记录
+The project consists of an API endpoint written in Python and a simple page written in Next.js. The former uses MongoDB to connect to Overleaf's database and uses the Docker API to execute commands in the Overleaf container to create users. The latter provides OIDC login authorization and utilizes the former's API to implement self-registration.
 
-尚未实现：
-- [ ] 审计功能
-- [ ] 限速功能
-- [ ] 手机端适配
-
-## 部署和使用教程
-
-请参考项目 wiki。
+Please refer to the [docker-compose.yaml](./docker-compose.yaml) file for deployment.

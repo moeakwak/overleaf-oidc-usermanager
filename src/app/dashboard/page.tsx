@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getUser, createUser } from "@/connector/client";
+import { getUser } from "@/connector/client";
 import { getCurrentUserOrRedirect } from "@/lib/session";
 import { RegisterButton } from "./register-button";
 import LogoutButton from "../_components/logout-button";

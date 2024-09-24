@@ -14,7 +14,7 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    OVERLEAF_CONNECTOR_URL: z.string().default("http://overleaf-connector-api:4571"),
+    OVERLEAF_CONNECTOR_URL: z.string().default("http://connector-api:4571"),
     OVERLEAF_CONNECTOR_API_KEY: z.string(),
 
     IS_BUILDING: booleanEnv.default(false),
