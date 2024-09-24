@@ -36,6 +36,7 @@ import {
   MessageSquareMore,
   FileBarChart,
   Coins,
+  LogOut,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -75,6 +76,7 @@ export const Icons = {
   fileClock: FileClock,
   message: MessageSquareMore,
   fileBarChart: FileBarChart,
+  logout: LogOut,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

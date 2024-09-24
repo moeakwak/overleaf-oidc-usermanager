@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { doCreateUser } from "../(panel)/action";
+import { doCreateUser } from "./action";
 import { useState } from "react";
 import { FunctionButton } from "@/components/loading-button";
 import Link from "next/link";
@@ -48,12 +48,12 @@ export function RegisterButton(props: { email: string; text: string }) {
           <p>Success. Click the button below to open the registration page:</p>
           <Button className="my-2 w-full" asChild>
             
-            <Link href={link}><Icons.externalLink className="w-4 mr-2" /> Open Registration Page</Link>
+            <Link href={link} target="_blank"><Icons.externalLink className="w-4 mr-2" /> Open Registration Page</Link>
           </Button>
           <p className="text-sm text-gray-500">Or copy the link below and open it manually:</p>
           <Input className="my-2" value={link} />
       <p className="text-sm text-gray-500">
-        Note: If you have already fin an account, although clicking the button will show a new registration url, the
+        Note: If you have already finished the registration, although clicking the button will show a new registration url, the
         registration url will have no effect.
       </p>
         </div>

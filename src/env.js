@@ -21,15 +21,9 @@ export const env = createEnv({
 
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 
-    ADMIN_EMAIL: z.string().email().optional().default("admin@example.com"),
-    ADMIN_PASSWORD: z.string().optional().default("adminadmin"),
-
     COOKIE_PREFIX: z.string().optional().default("overleaf_oidc_usermanager"),
 
     BASE_URL: z.string(),
-
-    ENABLE_OIDC_LOGIN: booleanEnv.default(true),
-    ENABLE_ADMIN_PASSWORD_LOGIN: booleanEnv.default(true),
 
     OIDC_CLIENT_ID: z.string().optional(),
     OIDC_CLIENT_SECRET: z.string().optional(),
@@ -67,14 +61,8 @@ export const env = createEnv({
 
     NODE_ENV: process.env.NODE_ENV,
 
-    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-
     COOKIE_PREFIX: process.env.COOKIE_PREFIX,
     BASE_URL: process.env.BASE_URL,
-    ENABLE_ADMIN_PASSWORD_LOGIN: process.env.ENABLE_ADMIN_LOGIN,
-
-    ENABLE_OIDC_LOGIN: process.env.ENABLE_OIDC_LOGIN,
 
     OIDC_CLIENT_ID: process.env.OIDC_CLIENT_ID,
     OIDC_CLIENT_SECRET: process.env.OIDC_CLIENT_SECRET,

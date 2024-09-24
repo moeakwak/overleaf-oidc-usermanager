@@ -7,7 +7,7 @@ import { UserRole } from "./schema";
 const adapter = new UnstorageAdapter(sessionStorage, userStorage);
 
 export const lucia = new Lucia(adapter, {
-  sessionExpiresIn: new TimeSpan(2, "w"),
+  sessionExpiresIn: new TimeSpan(2, "h"),
   sessionCookie: {
     name: "overleaf-mgr-session",
     expires: false,

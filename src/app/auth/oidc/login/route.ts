@@ -4,9 +4,6 @@ import { generateState } from "oslo/oauth2";
 import { env } from "@/env";
 
 export async function GET(_request: NextRequest) {
-  if (env.ENABLE_OIDC_LOGIN === false) {
-    return NextResponse.json({ error: "OIDC login is disabled" }, { status: 403 });
-  }
   try {
     const client = getOAuth2Client();
 
